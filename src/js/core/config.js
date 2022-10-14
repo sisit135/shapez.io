@@ -145,7 +145,7 @@ export const globalConfig = {
     },
 };
 
-export const IS_MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+export const IS_MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) && !window.location.search.includes("bypassMobileBrowserDetection");
 
 // Automatic calculations
 globalConfig.minerSpeedItemsPerSecond = globalConfig.beltSpeedItemsPerSecond / 5;
