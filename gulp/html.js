@@ -195,7 +195,9 @@ function gulptasksHTML($, gulp, buildFolder) {
                 googleAnalytics: !data.standalone,
                 standalone: data.standalone,
                 integrity: true,
-                enableCachebust: !data.standalone,
+                //enableCachebust: !data.standalone,
+                enableCachebust: false,
+                // Disable resource versioning due to it's taking more storage
             });
         });
     }
