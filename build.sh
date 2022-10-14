@@ -1,16 +1,24 @@
-#!/bin/sh
+#!/bin/bash
 printf 'Installing dependencies...\n'
 
-curl -L -o ffmpeg_tmp.tar.xz https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-lgpl-shared.tar.xz && tar -xf ffmpeg_tmp.tar.xz
+if [ -e ffmpeg_tmp.tar.xz ]
+then
+    echo "Ffmpeg OK"
+else
+    echo "Downloading..."
+    curl -L -o ffmpeg_tmp.tar.xz https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-lgpl-shared.tar.xz && tar -xf ffmpeg_tmp.tar.xz
+fi
+
 chmod +x ./ffmpeg-master-latest-linux64-lgpl-shared/bin/ffmpeg
-export PATH="$PATH:./ffmpeg-master-latest-linux64-lgpl-shared/bin/"
+export PATH="$PATH:$(pwd)/ffmpeg-master-latest-linux64-lgpl-shared/bin/"
 echo $PATH
 
+printf 'Restoreing packages...\n'
 yarn
 cd gulp
 yarn
-printf 'Building...\n'
 
+printf 'Building...\n'
 yarn gulp build.web-shapezio
 if [ $? -eq 0 ]
 then
