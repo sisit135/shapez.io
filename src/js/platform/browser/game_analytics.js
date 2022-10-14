@@ -86,15 +86,15 @@ export class ShapezGameAnalytics extends GameAnalyticsInterface {
         if (this.app.restrictionMgr.isLimitedVersion()) {
             fetch(
                 "https://analytics.shapez.io/campaign/" +
-                    "action_" +
-                    this.environment +
-                    "_" +
-                    action +
-                    "_" +
-                    CURRENT_ABT +
-                    "_" +
-                    this.abtVariant +
-                    "?lpurl=nocontent",
+                "action_" +
+                this.environment +
+                "_" +
+                action +
+                "_" +
+                CURRENT_ABT +
+                "_" +
+                this.abtVariant +
+                "?lpurl=nocontent",
                 {
                     method: "GET",
                     mode: "no-cors",
@@ -102,11 +102,11 @@ export class ShapezGameAnalytics extends GameAnalyticsInterface {
                     referrer: "no-referrer",
                     credentials: "omit",
                 }
-            ).catch(err => {});
+            ).catch(err => { });
         }
     }
 
-    noteMinor(action, payload = "") {}
+    noteMinor(action, payload = "") { }
 
     /**
      * @returns {Promise<void>}
@@ -114,95 +114,96 @@ export class ShapezGameAnalytics extends GameAnalyticsInterface {
     initialize() {
         this.syncKey = null;
 
-        if (G_WEGAME_VERSION) {
-            return;
-        }
+        return;
+        // if (G_WEGAME_VERSION) {
+        //     return;
+        // }
 
-        window.setAbt = abt => {
-            this.app.storage.writeFileAsync("shapez_" + CURRENT_ABT + ".bin", String(abt));
-            window.location.reload();
-        };
+        // window.setAbt = abt => {
+        //     this.app.storage.writeFileAsync("shapez_" + CURRENT_ABT + ".bin", String(abt));
+        //     window.location.reload();
+        // };
 
-        // Retrieve sync key from player
-        return this.fetchABVariant().then(() => {
-            setInterval(() => this.sendTimePoints(), 60 * 1000);
+        // // Retrieve sync key from player
+        // return this.fetchABVariant().then(() => {
+        //     setInterval(() => this.sendTimePoints(), 60 * 1000);
 
-            if (this.app.restrictionMgr.isLimitedVersion() && !G_IS_DEV) {
-                fetch(
-                    "https://analytics.shapez.io/campaign/" +
-                        this.environment +
-                        "_" +
-                        CURRENT_ABT +
-                        "_" +
-                        this.abtVariant +
-                        "?lpurl=nocontent",
-                    {
-                        method: "GET",
-                        mode: "no-cors",
-                        cache: "no-cache",
-                        referrer: "no-referrer",
-                        credentials: "omit",
-                    }
-                ).catch(err => {});
-            }
+        //     if (this.app.restrictionMgr.isLimitedVersion() && !G_IS_DEV) {
+        //         fetch(
+        //             "https://analytics.shapez.io/campaign/" +
+        //                 this.environment +
+        //                 "_" +
+        //                 CURRENT_ABT +
+        //                 "_" +
+        //                 this.abtVariant +
+        //                 "?lpurl=nocontent",
+        //             {
+        //                 method: "GET",
+        //                 mode: "no-cors",
+        //                 cache: "no-cache",
+        //                 referrer: "no-referrer",
+        //                 credentials: "omit",
+        //             }
+        //         ).catch(err => {});
+        //     }
 
-            return this.app.storage.readFileAsync(analyticsLocalFile).then(
-                syncKey => {
-                    this.syncKey = syncKey;
-                    logger.log("Player sync key read:", this.syncKey);
-                },
-                error => {
-                    // File was not found, retrieve new key
-                    if (error === FILE_NOT_FOUND) {
-                        logger.log("Retrieving new player key");
+        //     return this.app.storage.readFileAsync(analyticsLocalFile).then(
+        //         syncKey => {
+        //             this.syncKey = syncKey;
+        //             logger.log("Player sync key read:", this.syncKey);
+        //         },
+        //         error => {
+        //             // File was not found, retrieve new key
+        //             if (error === FILE_NOT_FOUND) {
+        //                 logger.log("Retrieving new player key");
 
-                        let authTicket = Promise.resolve(undefined);
+        //                 let authTicket = Promise.resolve(undefined);
 
-                        if (G_IS_STANDALONE && !G_IS_STEAM_DEMO) {
-                            logger.log("Will retrieve auth ticket");
-                            authTicket = ipcRenderer.invoke("steam:get-ticket");
-                        }
+        //                 if (G_IS_STANDALONE && !G_IS_STEAM_DEMO) {
+        //                     logger.log("Will retrieve auth ticket");
+        //                     authTicket = ipcRenderer.invoke("steam:get-ticket");
+        //                 }
 
-                        authTicket
-                            .then(
-                                ticket => {
-                                    logger.log("Got ticket:", ticket);
+        //                 authTicket
+        //                     .then(
+        //                         ticket => {
+        //                             logger.log("Got ticket:", ticket);
 
-                                    // Perform call to get a new key from the API
-                                    return this.sendToApi("/v1/register", {
-                                        environment: this.environment,
-                                        standalone:
-                                            G_IS_STANDALONE &&
-                                            !G_IS_STEAM_DEMO &&
-                                            this.app.achievementProvider instanceof SteamAchievementProvider,
-                                        commit: G_BUILD_COMMIT_HASH,
-                                        ticket,
-                                    });
-                                },
-                                err => {
-                                    logger.warn("Failed to get steam auth ticket for register:", err);
-                                }
-                            )
-                            .then(res => {
-                                // Try to read and parse the key from the api
-                                if (res.key && typeof res.key === "string" && res.key.length === 40) {
-                                    this.syncKey = res.key;
-                                    logger.log("Key retrieved:", this.syncKey);
-                                    this.app.storage.writeFileAsync(analyticsLocalFile, res.key);
-                                } else {
-                                    throw new Error("Bad response from analytics server: " + res);
-                                }
-                            })
-                            .catch(err => {
-                                logger.error("Failed to register on analytics api:", err);
-                            });
-                    } else {
-                        logger.error("Failed to read ga key:", error);
-                    }
-                    return;
-                }
-            );
-        });
+        //                             // Perform call to get a new key from the API
+        //                             return this.sendToApi("/v1/register", {
+        //                                 environment: this.environment,
+        //                                 standalone:
+        //                                     G_IS_STANDALONE &&
+        //                                     !G_IS_STEAM_DEMO &&
+        //                                     this.app.achievementProvider instanceof SteamAchievementProvider,
+        //                                 commit: G_BUILD_COMMIT_HASH,
+        //                                 ticket,
+        //                             });
+        //                         },
+        //                         err => {
+        //                             logger.warn("Failed to get steam auth ticket for register:", err);
+        //                         }
+        //                     )
+        //                     .then(res => {
+        //                         // Try to read and parse the key from the api
+        //                         if (res.key && typeof res.key === "string" && res.key.length === 40) {
+        //                             this.syncKey = res.key;
+        //                             logger.log("Key retrieved:", this.syncKey);
+        //                             this.app.storage.writeFileAsync(analyticsLocalFile, res.key);
+        //                         } else {
+        //                             throw new Error("Bad response from analytics server: " + res);
+        //                         }
+        //                     })
+        //                     .catch(err => {
+        //                         logger.error("Failed to register on analytics api:", err);
+        //                     });
+        //             } else {
+        //                 logger.error("Failed to read ga key:", error);
+        //             }
+        //             return;
+        //         }
+        //     );
+        // });
     }
 
     /**
@@ -221,40 +222,42 @@ export class ShapezGameAnalytics extends GameAnalyticsInterface {
      * @returns {Promise<any>}
      */
     sendToApi(endpoint, data) {
-        if (G_WEGAME_VERSION) {
-            return Promise.resolve();
-        }
+        logger.log("Sent GA req to backhole.")
+        return Promise.resolve();
+        // if (G_WEGAME_VERSION) {
+        //     return Promise.resolve();
+        // }
 
-        return new Promise((resolve, reject) => {
-            const timeout = setTimeout(() => reject("Request to " + endpoint + " timed out"), 20000);
+        // return new Promise((resolve, reject) => {
+        //     const timeout = setTimeout(() => reject("Request to " + endpoint + " timed out"), 20000);
 
-            fetch(analyticsUrl + endpoint, {
-                method: "POST",
-                mode: "cors",
-                cache: "no-cache",
-                referrer: "no-referrer",
-                credentials: "omit",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "x-api-key": globalConfig.info.analyticsApiKey,
-                },
-                body: JSON.stringify(data),
-            })
-                .then(res => {
-                    clearTimeout(timeout);
-                    if (!res.ok || res.status !== 200) {
-                        reject("Fetch error: Bad status " + res.status);
-                    } else {
-                        return res.json();
-                    }
-                })
-                .then(resolve)
-                .catch(reason => {
-                    clearTimeout(timeout);
-                    reject(reason);
-                });
-        });
+        //     fetch(analyticsUrl + endpoint, {
+        //         method: "POST",
+        //         mode: "cors",
+        //         cache: "no-cache",
+        //         referrer: "no-referrer",
+        //         credentials: "omit",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //             "Accept": "application/json",
+        //             "x-api-key": globalConfig.info.analyticsApiKey,
+        //         },
+        //         body: JSON.stringify(data),
+        //     })
+        //         .then(res => {
+        //             clearTimeout(timeout);
+        //             if (!res.ok || res.status !== 200) {
+        //                 reject("Fetch error: Bad status " + res.status);
+        //             } else {
+        //                 return res.json();
+        //             }
+        //         })
+        //         .then(resolve)
+        //         .catch(reason => {
+        //             clearTimeout(timeout);
+        //             reject(reason);
+        //         });
+        // });
     }
 
     /**
