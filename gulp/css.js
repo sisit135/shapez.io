@@ -11,8 +11,8 @@ function gulptasksCSS($, gulp, buildFolder, browserSync) {
             baseUrl: ".",
             cachebuster: cachebust
                 ? (filePath, urlPathname) => ({
-                      pathname: buildUtils.cachebust(urlPathname, commitHash),
-                  })
+                    pathname: buildUtils.cachebust(urlPathname, commitHash),
+                })
                 : "",
         });
 
@@ -82,7 +82,7 @@ function gulptasksCSS($, gulp, buildFolder, browserSync) {
 
     // Builds the css resources in prod (=minified)
     gulp.task("css.resources.prod", () => {
-        return resourcesTask({ cachebust: true, isProd: true });
+        return resourcesTask({ /*cachebust: true*/ cachebust: false, isProd: true });
     });
 
     // Builds the css resources in prod (=minified), without cachebusting
