@@ -19,6 +19,7 @@ cd gulp
 yarn
 
 printf 'Building...\n'
+yarn gulp utils.requireCleanWorkingTree
 yarn gulp build.web-shapezio
 if [ $? -eq 0 ]
 then
