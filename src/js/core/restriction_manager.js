@@ -56,24 +56,28 @@ export class RestrictionManager extends ReadWriteProxy {
      * @returns {boolean}
      */
     isLimitedVersion() {
-        if (G_IS_STEAM_DEMO) {
-            return true;
-        }
 
-        if (G_IS_STANDALONE) {
-            // Standalone is never limited
-            return false;
-        }
+        // if (G_IS_STEAM_DEMO) {
+        //     return true;
+        // }
 
-        if (WEB_STEAM_SSO_AUTHENTICATED) {
-            return false;
-        }
+        // if (G_IS_STANDALONE) {
+        //     // Standalone is never limited
+        //     return false;
+        // }
 
-        if (G_IS_DEV) {
-            return typeof window !== "undefined" && window.location.search.indexOf("demo") >= 0;
-        }
+        // if (WEB_STEAM_SSO_AUTHENTICATED) {
+        //     return false;
+        // }
+        /*
+                if (G_IS_DEV) {
+                    return typeof window !== "undefined" && window.location.search.indexOf("demo") >= 0;
+                } */
 
-        return true;
+        //return true;
+
+        return typeof window !== "undefined" && window.location.search.indexOf("forceDemoVer") >= 0;
+
     }
 
     /**
