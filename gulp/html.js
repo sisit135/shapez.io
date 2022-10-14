@@ -194,7 +194,9 @@ function gulptasksHTML($, gulp, buildFolder) {
             return buildHtml({
                 googleAnalytics: !data.standalone,
                 standalone: data.standalone,
-                integrity: true,
+                //integrity: true,
+                integrity: false,
+                // TODO: workaround this intg bypass problem
                 enableCachebust: !data.standalone,
             });
         });
