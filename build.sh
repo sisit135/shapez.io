@@ -19,7 +19,8 @@ cd gulp
 yarn
 
 printf 'Building...\n'
-yarn gulp build.web-shapezio
+yarn gulp build.prepare.dev && yarn gulp build.web-shapezio
+
 if [ $? -eq 0 ]
 then
   printf 'Done.\n'
