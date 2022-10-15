@@ -115,7 +115,7 @@ function gulptasksCSS($, gulp, buildFolder, browserSync) {
 
     // Builds the css main in prod (=minified)
     gulp.task("css.main.prod", () => {
-        return mainTask({ cachebust: true, isProd: true });
+        return mainTask({ /*cachebust: true*/ cachebust: false, isProd: true });
     });
 
     // Builds the css main in prod (=minified), without cachebusting
