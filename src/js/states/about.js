@@ -22,6 +22,8 @@ export class AboutState extends TextualGameState {
             ${T.about.body
                 .replace("<githublink>", THIRDPARTY_URLS.github)
                 .replace("<discordlink>", THIRDPARTY_URLS.discord)}
+                <br>
+                Hosted by SN (https://github.com/sisit135/shapez.io)
             </div>
         `;
     }
