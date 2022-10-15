@@ -47,46 +47,47 @@ export class PreloadState extends GameState {
     }
 
     async fetchDiscounts() {
-        await timeoutPromise(
-            fetch("https://analytics.shapez.io/v1/discounts")
-                .then(res => res.json())
-                .then(data => {
-                    globalConfig.currentDiscount = Number(
-                        data["1318690"].data.price_overview.discount_percent
-                    );
-                    logger.log("Fetched current discount:", globalConfig.currentDiscount);
-                }),
-            2000
-        ).catch(err => {
-            logger.warn("Failed to fetch current discount:", err);
-        });
+        // await timeoutPromise(
+        //     fetch("https://analytics.shapez.io/v1/discounts")
+        //         .then(res => res.json())
+        //         .then(data => {
+        //             globalConfig.currentDiscount = Number(
+        //                 data["1318690"].data.price_overview.discount_percent
+        //             );
+        //             logger.log("Fetched current discount:", globalConfig.currentDiscount);
+        //         }),
+        //     2000
+        // ).catch(err => {
+        //     logger.warn("Failed to fetch current discount:", err);
+        // });
     }
 
     async sendBeacon() {
-        if (G_IS_STANDALONE && !G_IS_STEAM_DEMO) {
-            return;
-        }
-        if (queryParamOptions.campaign) {
-            fetch(
-                "https://analytics.shapez.io/campaign/" +
-                    queryParamOptions.campaign +
-                    "?lpurl=nocontent&fbclid=" +
-                    (queryParamOptions.fbclid || "") +
-                    "&gclid=" +
-                    (queryParamOptions.gclid || "")
-            ).catch(err => {
-                console.warn("Failed to send beacon:", err);
-            });
-        }
-        if (queryParamOptions.embedProvider) {
-            fetch(
-                "https://analytics.shapez.io/campaign/embed_" +
-                    queryParamOptions.embedProvider +
-                    "?lpurl=nocontent"
-            ).catch(err => {
-                console.warn("Failed to send beacon:", err);
-            });
-        }
+        return;
+        // if (G_IS_STANDALONE && !G_IS_STEAM_DEMO) {
+        //     return;
+        // }
+        // if (queryParamOptions.campaign) {
+        //     fetch(
+        //         "https://analytics.shapez.io/campaign/" +
+        //             queryParamOptions.campaign +
+        //             "?lpurl=nocontent&fbclid=" +
+        //             (queryParamOptions.fbclid || "") +
+        //             "&gclid=" +
+        //             (queryParamOptions.gclid || "")
+        //     ).catch(err => {
+        //         console.warn("Failed to send beacon:", err);
+        //     });
+        // }
+        // if (queryParamOptions.embedProvider) {
+        //     fetch(
+        //         "https://analytics.shapez.io/campaign/embed_" +
+        //             queryParamOptions.embedProvider +
+        //             "?lpurl=nocontent"
+        //     ).catch(err => {
+        //         console.warn("Failed to send beacon:", err);
+        //     });
+        // }
     }
 
     onLeave() {
@@ -123,8 +124,8 @@ export class PreloadState extends GameState {
                         return new Promise(() => {
                             alert(
                                 "Your brower does not support thirdparty cookies or you have disabled it in your security settings.\n\n" +
-                                    "In Chrome this setting is called 'Block third-party cookies and site data'.\n\n" +
-                                    "Please allow third party cookies and then reload the page."
+                                "In Chrome this setting is called 'Block third-party cookies and site data'.\n\n" +
+                                "Please allow third party cookies and then reload the page."
                             );
                             // Never return
                         });
@@ -259,9 +260,8 @@ export class PreloadState extends GameState {
                         for (let i = 0; i < changelogEntries.length; ++i) {
                             const entry = changelogEntries[i];
                             dialogHtml += `
-                            <div class="changelogDialogEntry" data-changelog-skin="${
-                                entry.skin || "default"
-                            }">
+                            <div class="changelogDialogEntry" data-changelog-skin="${entry.skin || "default"
+                                }">
                                 <span class="version">${entry.version}</span>
                                 <span class="date">${entry.date}</span>
                                 <ul class="changes">

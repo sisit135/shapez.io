@@ -86,27 +86,26 @@ export class MainMenuState extends GameState {
 
             <div class="points">
                 ${Array.from(Object.entries(T.ingame.standaloneAdvantages.points))
-                    .slice(0, 6)
-                    .map(
-                        ([key, trans]) => `
+                .slice(0, 6)
+                .map(
+                    ([key, trans]) => `
                 <div class="point ${key}">
                     <strong>${trans.title}</strong>
                     <p>${trans.desc}</p>
                 </div>`
-                    )
-                    .join("")}
+                )
+                .join("")}
 
             </div>
 
 
             <a href="#" class="steamLink steam_dlbtn_0" target="_blank">
-            ${
-                globalConfig.currentDiscount > 0
-                    ? `<span class='discount'>${T.global.discount.replace(
-                          "<percentage>",
-                          String(globalConfig.currentDiscount)
-                      )}</span>`
-                    : ""
+            ${globalConfig.currentDiscount > 0
+                ? `<span class='discount'>${T.global.discount.replace(
+                    "<percentage>",
+                    String(globalConfig.currentDiscount)
+                )}</span>`
+                : ""
             }
                 Play shapez on Steam
             </a>
@@ -116,11 +115,10 @@ export class MainMenuState extends GameState {
 
         return `
             <div class="topButtons">
-                ${
-                    showLanguageIcon
-                        ? `<button aria-label="Choose Language" class="languageChoose" data-languageicon="${this.app.settings.getLanguage()}"></button>`
-                        : ""
-                }
+                ${showLanguageIcon
+                ? `<button aria-label="Choose Language" class="languageChoose" data-languageicon="${this.app.settings.getLanguage()}"></button>`
+                : ""
+            }
 
                 <button class="settingsButton" aria-label="Settings"></button>
                 ${showExitAppButton ? `<button class="exitAppButton" aria-label="Exit App"></button>` : ""}
@@ -143,31 +141,27 @@ export class MainMenuState extends GameState {
                 <div class="mainContainer">
                     <div class="buttons"></div>
                     <div class="savegamesMount"></div>
-                    ${
-                        hasSteamBridge && (G_IS_STANDALONE || !WEB_STEAM_SSO_AUTHENTICATED)
-                            ? `<div class="steamSso">
-                                <span class="description">${
-                                    G_IS_STANDALONE
-                                        ? T.mainMenu.playFullVersionStandalone
-                                        : T.mainMenu.playFullVersionV2
-                                }</span>
-                                <a class="ssoSignIn" target="_blank" href="${
-                                    this.app.clientApi.getEndpoint() + "/v1/noauth/steam-sso"
-                                }">Sign in</a>
+                    ${hasSteamBridge && (G_IS_STANDALONE || !WEB_STEAM_SSO_AUTHENTICATED)
+                ? `<div class="steamSso">
+                                <span class="description">${G_IS_STANDALONE
+                    ? T.mainMenu.playFullVersionStandalone
+                    : T.mainMenu.playFullVersionV2
+                }</span>
+                                <a class="ssoSignIn" target="_blank" href="${this.app.clientApi.getEndpoint() + "/v1/noauth/steam-sso"
+                }">Sign in</a>
                             </div>`
-                            : ""
-                    }
-                    ${
-                        hasSteamBridge && WEB_STEAM_SSO_AUTHENTICATED
-                            ? `
+                : ""
+            }
+                    ${hasSteamBridge && WEB_STEAM_SSO_AUTHENTICATED
+                ? `
                             <div class="steamSso">
                                 <span class="description">${T.mainMenu.playingFullVersion}</span>
                                 <a class="ssoSignOut" href="?sso_logout_silent">${T.mainMenu.logout}</a>
 
                             </div>
                         `
-                            : ""
-                    }
+                : ""
+            }
 
 
 
@@ -176,48 +170,43 @@ export class MainMenuState extends GameState {
                 <div class="sideContainer">
                     ${showDemoAdvertisement ? `<div class="standaloneBanner">${bannerHtml}</div>` : ""}
 
-                    ${
-                        showShapez2
-                            ? `<div class="mainNews shapez2">
+                    ${showShapez2
+                ? `<div class="mainNews shapez2">
                         <div class="text">We are currently prototyping Shapez 2!</div>
 
                     </div>`
-                            : ""
-                    }
+                : ""
+            }
 
-                ${
-                    showPuzzleDLC
-                        ? `
+                ${showPuzzleDLC
+                ? `
 
-                        ${
-                            ownsPuzzleDLC && !hasMods
-                                ? `
+                        ${ownsPuzzleDLC && !hasMods
+                    ? `
                             <div class="puzzleContainer owned">
                                 <button class="styledButton puzzleDlcPlayButton">${T.mainMenu.play}</button>
                             </div>`
-                                : ""
-                        }
+                    : ""
+                }
 
-                        ${
-                            !ownsPuzzleDLC && !hasMods
-                                ? `
+                        ${!ownsPuzzleDLC && !hasMods
+                    ? `
                             <div class="puzzleContainer notOwned">
                                 <p>${T.mainMenu.puzzleDlcText}</p>
                                 <button class="styledButton puzzleDlcGetButton">${T.mainMenu.puzzleDlcViewNow}</button>
                             </div>`
-                                : ""
-                        }
+                    : ""
+                }
 
 
 
                 `
-                        : ""
-                }
+                : ""
+            }
 
 
-                ${
-                    hasMods
-                        ? `
+                ${hasMods
+                ? `
 
                         <div class="modsOverview">
                             <div class="header">
@@ -226,15 +215,15 @@ export class MainMenuState extends GameState {
                             </div>
                             <div class="modsList">
                             ${MODS.mods
-                                .map(mod => {
-                                    return `
+                    .map(mod => {
+                        return `
                                     <div class="mod">
                                         <div class="name">${mod.metadata.name}</div>
                                         <div class="author">by ${mod.metadata.author}</div>
                                     </div>
                                 `;
-                                })
-                                .join("")}
+                    })
+                    .join("")}
                             </div>
 
                             <div class="dlcHint">
@@ -244,17 +233,16 @@ export class MainMenuState extends GameState {
 
                         </div>
                         `
-                        : ""
-                }
+                : ""
+            }
 
                 </div>
 
 
             </div>
 
-            ${
-                showWegameFooter
-                    ? `
+            ${showWegameFooter
+                ? `
                 <div class='footer wegameDisclaimer'>
                         <div class="disclaimer">
                             健康游戏忠告
@@ -266,56 +254,51 @@ export class MainMenuState extends GameState {
                         <div class="rating"></div>
                     </div>
                     `
-                    : `
+                : `
 
                 <div class="footer ${showExternalLinks ? "" : "noLinks"} ">
 
                     <div class="socialLinks">
 
-                    ${
-                        showExternalLinks && (!G_IS_STANDALONE || G_IS_STEAM_DEMO)
-                            ? `<a class="steamLinkSocial boxLink" target="_blank">
+                    ${showExternalLinks && (!G_IS_STANDALONE || G_IS_STEAM_DEMO)
+                    ? `<a class="steamLinkSocial boxLink" target="_blank">
                                     <span class="thirdpartyLogo steamLogo"></span>
                                     <span class="label">steam</span>
                                 </a>`
-                            : ""
-                    }
-                    ${
-                        showExternalLinks && !G_IS_STEAM_DEMO
-                            ? `
+                    : ""
+                }
+                    ${showExternalLinks && !G_IS_STEAM_DEMO
+                    ? `
                         <a class="githubLink boxLink" target="_blank">
                             <span class="thirdpartyLogo githubLogo"></span>
                             <span class="label">GitHub</span>
                         </a>`
-                            : ""
-                    }
+                    : ""
+                }
 
-                    ${
-                        showDiscordLink
-                            ? `<a class="discordLink boxLink" target="_blank">
+                    ${showDiscordLink
+                    ? `<a class="discordLink boxLink" target="_blank">
                                     <span class="thirdpartyLogo  discordLogo"></span>
                                     <span class="label">Discord</span>
                                 </a>`
-                            : ""
-                    }
+                    : ""
+                }
 
-                    ${
-                        showExternalLinks
-                            ? `<a class="redditLink boxLink" target="_blank">
+                    ${showExternalLinks
+                    ? `<a class="redditLink boxLink" target="_blank">
                                     <span class="thirdpartyLogo redditLogo"></span>
                                     <span class="label">Reddit</span>
                                 </a>`
-                            : ""
-                    }
+                    : ""
+                }
 
-                    ${
-                        showExternalLinks
-                            ? `<a class="twitterLink boxLink" target="_blank">
+                    ${showExternalLinks
+                    ? `<a class="twitterLink boxLink" target="_blank">
                                     <span class="thirdpartyLogo twitterLogo"></span>
                                     <span class="label">Twitter</span>
                                 </a>`
-                            : ""
-                    }
+                    : ""
+                }
 
 
                     </div>
@@ -537,22 +520,22 @@ export class MainMenuState extends GameState {
     }
 
     fetchPlayerCount() {
-        const element = this.htmlElement.querySelector(".onlinePlayerCount");
-        if (!element) {
-            return;
-        }
-        fetch("https://analytics.shapez.io/v1/player-count", {
-            cache: "no-cache",
-        })
-            .then(res => res.json())
-            .then(
-                count => {
-                    element.innerText = T.demoBanners.playerCount.replace("<playerCount>", String(count));
-                },
-                ex => {
-                    console.warn("Failed to get player count:", ex);
-                }
-            );
+        // const element = this.htmlElement.querySelector(".onlinePlayerCount");
+        // if (!element) {
+        //     return;
+        // }
+        // fetch("https://analytics.shapez.io/v1/player-count", {
+        //     cache: "no-cache",
+        // })
+        //     .then(res => res.json())
+        //     .then(
+        //         count => {
+        //             element.innerText = T.demoBanners.playerCount.replace("<playerCount>", String(count));
+        //         },
+        //         ex => {
+        //             console.warn("Failed to get player count:", ex);
+        //         }
+        //     );
     }
 
     onPuzzleModeButtonClicked(force = false) {
@@ -802,9 +785,9 @@ export class MainMenuState extends GameState {
                     <div class="name">${mod.name}</div>
                     <div class="version">${T.mods.version} ${mod.version}</div>
                     <button class="website styledButton" onclick="window.open('${mod.website.replace(
-                        /"'/,
-                        ""
-                    )}')">${T.mods.modWebsite}
+                /"'/,
+                ""
+            )}')">${T.mods.modWebsite}
             </button>
 
                 </div>
