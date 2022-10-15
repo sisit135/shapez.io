@@ -70,32 +70,22 @@ export class PlatformWrapperImplElectron extends PlatformWrapperImplBrowser {
     }
 
     initializeDlcStatus() {
-        if (G_WEGAME_VERSION) {
-            return Promise.resolve();
-        }
 
-        logger.log("Checking DLC ownership ...");
-        // @todo: Don't hardcode the app id
-        return ipcRenderer.invoke("steam:check-app-ownership", 1625400).then(
-            res => {
-                logger.log("Got DLC ownership:", res);
-                this.dlcs.puzzle = Boolean(res);
+        logger.log("Unlocked puzzle DLC automatically.")
+        this.dlcs.puzzle = true;
 
-                if (this.dlcs.puzzle && !G_IS_DEV) {
-                    this.app.gameAnalytics.activateDlc("puzzle").then(
-                        () => {
-                            logger.log("Puzzle DLC successfully activated");
-                        },
-                        error => {
-                            logger.error("Failed to activate puzzle DLC:", error);
-                        }
-                    );
-                }
-            },
-            err => {
-                logger.error("Failed to get DLC ownership:", err);
-            }
-        );
+
+        // if (G_WEGAME_VERSION) {
+        //     return Promise.resolve();
+        // }
+
+        // logger.log("Checking DLC ownership ...");
+        // // @todo: Don't hardcode the app id
+        // return ipcRenderer.invoke("steam:check-app-ownership", 1625400).then(
+        //     res => {
+        //         logger.log("Got DLC ownership:", res);
+        //         this.dlcs.puzzle = Boolean(res);
+
         //         if (this.dlcs.puzzle && !G_IS_DEV) {
         //             this.app.gameAnalytics.activateDlc("puzzle").then(
         //                 () => {
@@ -106,6 +96,11 @@ export class PlatformWrapperImplElectron extends PlatformWrapperImplBrowser {
         //                 }
         //             );
         //         }
+        //     },
+        //     err => {
+        //         logger.error("Failed to get DLC ownership:", err);
+        //     }
+        // );
     }
 
     getSupportsFullscreen() {
