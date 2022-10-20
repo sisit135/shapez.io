@@ -201,7 +201,7 @@ function initializeSettings() {
             (app, value) => null
         ),
 
-        new BoolSetting("offerHints", enumCategories.userInterface, (app, value) => {}),
+        new BoolSetting("offerHints", enumCategories.userInterface, (app, value) => { }),
 
         new EnumSetting("theme", {
             options: Object.keys(THEMES),
@@ -254,21 +254,21 @@ function initializeSettings() {
             textGetter: multiplier => T.settings.labels.movementSpeed.speeds[multiplier.id],
             category: enumCategories.advanced,
             restartRequired: false,
-            changeCb: (app, id) => {},
+            changeCb: (app, id) => { },
         }),
 
-        new BoolSetting("enableMousePan", enumCategories.advanced, (app, value) => {}),
-        new BoolSetting("shapeTooltipAlwaysOn", enumCategories.advanced, (app, value) => {}),
-        new BoolSetting("alwaysMultiplace", enumCategories.advanced, (app, value) => {}),
-        new BoolSetting("zoomToCursor", enumCategories.advanced, (app, value) => {}),
-        new BoolSetting("clearCursorOnDeleteWhilePlacing", enumCategories.advanced, (app, value) => {}),
-        new BoolSetting("enableTunnelSmartplace", enumCategories.advanced, (app, value) => {}),
-        new BoolSetting("vignette", enumCategories.userInterface, (app, value) => {}),
-        new BoolSetting("compactBuildingInfo", enumCategories.userInterface, (app, value) => {}),
-        new BoolSetting("disableCutDeleteWarnings", enumCategories.advanced, (app, value) => {}),
-        new BoolSetting("rotationByBuilding", enumCategories.advanced, (app, value) => {}),
-        new BoolSetting("displayChunkBorders", enumCategories.advanced, (app, value) => {}),
-        new BoolSetting("pickMinerOnPatch", enumCategories.advanced, (app, value) => {}),
+        new BoolSetting("enableMousePan", enumCategories.advanced, (app, value) => { }),
+        new BoolSetting("shapeTooltipAlwaysOn", enumCategories.advanced, (app, value) => { }),
+        new BoolSetting("alwaysMultiplace", enumCategories.advanced, (app, value) => { }),
+        new BoolSetting("zoomToCursor", enumCategories.advanced, (app, value) => { }),
+        new BoolSetting("clearCursorOnDeleteWhilePlacing", enumCategories.advanced, (app, value) => { }),
+        new BoolSetting("enableTunnelSmartplace", enumCategories.advanced, (app, value) => { }),
+        new BoolSetting("vignette", enumCategories.userInterface, (app, value) => { }),
+        new BoolSetting("compactBuildingInfo", enumCategories.userInterface, (app, value) => { }),
+        new BoolSetting("disableCutDeleteWarnings", enumCategories.advanced, (app, value) => { }),
+        new BoolSetting("rotationByBuilding", enumCategories.advanced, (app, value) => { }),
+        new BoolSetting("displayChunkBorders", enumCategories.advanced, (app, value) => { }),
+        new BoolSetting("pickMinerOnPatch", enumCategories.advanced, (app, value) => { }),
         new RangeSetting("mapResourcesScale", enumCategories.advanced, () => null),
 
         new EnumSetting("refreshRate", {
@@ -277,17 +277,22 @@ function initializeSettings() {
             textGetter: rate => T.settings.tickrateHz.replace("<amount>", rate),
             category: enumCategories.performance,
             restartRequired: false,
-            changeCb: (app, id) => {},
+            changeCb: (app, id) => { },
             enabledCb: /**
              * @param {Application} app
              */ app => app.restrictionMgr.getHasExtendedSettings(),
         }),
 
-        new BoolSetting("lowQualityMapResources", enumCategories.performance, (app, value) => {}),
-        new BoolSetting("disableTileGrid", enumCategories.performance, (app, value) => {}),
-        new BoolSetting("lowQualityTextures", enumCategories.performance, (app, value) => {}),
+        new BoolSetting("lowQualityMapResources", enumCategories.performance, (app, value) => { }),
+        new BoolSetting("disableTileGrid", enumCategories.performance, (app, value) => { }),
+        new BoolSetting("lowQualityTextures", enumCategories.performance, (app, value) => { }),
+        new BoolSetting("simplifiedBelts", enumCategories.performance, (app, value) => { }),
 
-        new BoolSetting("simplifiedBelts", enumCategories.performance, (app, value) => {}),
+        /// TWEAKS
+        new BoolSetting(
+            "unlockAllBlocks",
+            enumCategories.advanced, (app, value) => { }),
+
     ];
 }
 
@@ -332,6 +337,9 @@ class SettingsStorage {
          * @type {Object.<string, number>}
          */
         this.keybindingOverrides = {};
+        /// TWEAKS
+        this.unlockAllBlocks = false;
+
     }
 }
 
@@ -526,14 +534,14 @@ export class ApplicationSettings extends ReadWriteProxy {
             if (!setting.validate(storedValue)) {
                 return ExplainedResult.bad(
                     "Bad setting value for " +
-                        setting.id +
-                        ": " +
-                        storedValue +
-                        " @ settings version " +
-                        data.version +
-                        " (latest is " +
-                        this.getCurrentVersion() +
-                        ")"
+                    setting.id +
+                    ": " +
+                    storedValue +
+                    " @ settings version " +
+                    data.version +
+                    " (latest is " +
+                    this.getCurrentVersion() +
+                    ")"
                 );
             }
         }

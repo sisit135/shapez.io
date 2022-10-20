@@ -194,6 +194,10 @@ export class HubGoals extends BasicSerializableObject {
      * @param {enumHubGoalRewards} reward
      */
     isRewardUnlocked(reward) {
+
+        if (window.location.search.includes("unlockAllBlocks") || this.root.app.settings.getAllSettings().unlockAllBlocks) {
+            return true;
+        }
         if (G_IS_DEV && globalConfig.debug.allBuildingsUnlocked) {
             return true;
         }
