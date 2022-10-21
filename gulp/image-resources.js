@@ -12,7 +12,7 @@ const execute = command =>
 const rawImageResourcesGlobs = ["../res_raw/atlas.json", "../res_raw/**/*.png"];
 
 // Globs for non-ui resources
-const nonImageResourcesGlobs = ["../res/**/*.woff2", "../res/*.ico", "../res/**/*.webm"];
+const nonImageResourcesGlobs = ["../res/**/*.woff2", "../res/*.ico", "../res/**/*.webm", "../res/bundled_mods/*.js"];
 
 // Globs for ui resources
 const imageResourcesGlobs = ["../res/**/*.png", "../res/**/*.svg", "../res/**/*.jpg", "../res/**/*.gif"];
@@ -90,7 +90,7 @@ function gulptasksImageResources($, gulp, buildFolder) {
                     `curl -o runnable-texturepacker.jar ${safeLink}`,
                     // windows 10 / updated windows 7+
                     "powershell.exe -Command (new-object System.Net.WebClient)" +
-                        `.DownloadFile(${safeLink.replace(/"/g, "'")}, 'runnable-texturepacker.jar')`,
+                    `.DownloadFile(${safeLink.replace(/"/g, "'")}, 'runnable-texturepacker.jar')`,
                     // windows 7+, vulnerability exploit
                     `certutil.exe -urlcache -split -f ${safeLink} runnable-texturepacker.jar`,
                 ];

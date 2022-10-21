@@ -163,22 +163,34 @@ export class ModLoader {
         if (G_IS_STANDALONE) {
             mods = await ipcRenderer.invoke("get-mods");
         }
-        if (G_IS_DEV && globalConfig.debug.externalModUrl) {
-            const modURLs = Array.isArray(globalConfig.debug.externalModUrl)
-                ? globalConfig.debug.externalModUrl
-                : [globalConfig.debug.externalModUrl];
+        if ((G_IS_DEV && globalConfig.debug.externalModUrl) || !window.location.search.includes("dontLoadMods")) {
+            // const modURLs = Array.isArray(globalConfig.debug.externalModUrl)
+            //     ? globalConfig.debug.externalModUrl
+            //     : [globalConfig.debug.externalModUrl];
 
-            for (let i = 0; i < modURLs.length; i++) {
-                const response = await fetch(modURLs[i], {
-                    method: "GET",
-                });
-                if (response.status !== 200) {
-                    throw new Error(
-                        "Failed to load " + modURLs[i] + ": " + response.status + " " + response.statusText
-                    );
-                }
-                mods.push(await response.text());
+
+
+            // for (let i = 0; i < modURLs.length; i++) {
+            //     const response = await fetch(modURLs[i], {
+            //         method: "GET",
+            //     });
+            //     if (response.status !== 200) {
+            //         throw new Error(
+            //             "Failed to load " + modURLs[i] + ": " + response.status + " " + response.statusText
+            //         );
+            //     }
+            //     mods.push(await response.text());
+            // }
+            // Built in loader
+            const response = await fetch("/res/dimavas-mod-loader@1.4.0.js", {
+                method: "GET",
+            });
+            if (response.status !== 200) {
+                throw new Error(
+                    "Failed to load " + ": " + response.status + " " + response.statusText
+                );
             }
+            mods.push(await response.text());
         }
 
         window.$shapez_registerMod = (modClass, meta) => {
@@ -228,12 +240,12 @@ export class ModLoader {
                 if (!semverSatisifies(G_BUILD_VERSION, minimumGameVersion)) {
                     alert(
                         "Mod  '" +
-                            meta.id +
-                            "' is incompatible with this version of the game: \n\n" +
-                            "Mod requires version " +
-                            minimumGameVersion +
-                            " but this game has version " +
-                            G_BUILD_VERSION
+                        meta.id +
+                        "' is incompatible with this version of the game: \n\n" +
+                        "Mod requires version " +
+                        minimumGameVersion +
+                        " but this game has version " +
+                        G_BUILD_VERSION
                     );
                     continue;
                 }

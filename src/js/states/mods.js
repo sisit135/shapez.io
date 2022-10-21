@@ -14,11 +14,12 @@ export class ModsState extends TextualGameState {
     }
 
     get modsSupported() {
-        return (
-            !WEB_STEAM_SSO_AUTHENTICATED &&
-            !G_IS_STEAM_DEMO &&
-            (G_IS_STANDALONE || (G_IS_DEV && !window.location.href.includes("demo")))
-        );
+        return true;
+        // return (
+        //     !WEB_STEAM_SSO_AUTHENTICATED &&
+        //     !G_IS_STEAM_DEMO &&
+        //     (G_IS_STANDALONE || (G_IS_DEV && !window.location.href.includes("demo")))
+        // );
     }
 
     internalGetFullHtml() {
@@ -27,16 +28,14 @@ export class ModsState extends TextualGameState {
                 <h1><button class="backButton"></button> ${this.getStateHeaderTitle()}</h1>
 
                 <div class="actions">
-                   ${
-                       this.modsSupported && MODS.mods.length > 0
-                           ? `<button class="styledButton browseMods">${T.mods.browseMods}</button>`
-                           : ""
-                   }
-                   ${
-                       this.modsSupported
-                           ? `<button class="styledButton openModsFolder">${T.mods.openFolder}</button>`
-                           : ""
-                   }
+                   ${this.modsSupported && MODS.mods.length > 0
+                ? `<button class="styledButton browseMods">${T.mods.browseMods}</button>`
+                : ""
+            }
+                   ${this.modsSupported
+                ? `<button class="styledButton openModsFolder">${T.mods.openFolder}</button>`
+                : ""
+            }
                 </div>
 
             </div>`;
