@@ -1392,7 +1392,7 @@ settings:
         unlockAllBlocks:
             title: Unlock all blocks
             description: >-
-                Automatically unlock all blocks on campatin start
+                Automatically unlock all blocks on campain start
 
 keybindings:
     title: Keybindings
