@@ -145,10 +145,10 @@ export class ModLoader {
             return;
         }
 
-        if (!G_IS_STANDALONE && !G_IS_DEV) {
-            this.initialized = true;
-            return;
-        }
+        // if (!G_IS_STANDALONE && !G_IS_DEV) {
+        //     this.initialized = true;
+        //     return;
+        // }
 
         // Create a storage for reading mod settings
         const storage = G_IS_STANDALONE
