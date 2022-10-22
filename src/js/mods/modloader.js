@@ -105,11 +105,8 @@ export class ModLoader {
     }
 
     exposeExports() {
-        if (G_IS_STEAM_DEMO) {
-            return;
-        }
 
-        if (G_IS_DEV || G_IS_STANDALONE) {
+        if (!G_IS_STEAM_DEMO) {
             let exports = {};
             const modules = require.context("../", true, /\.js$/);
             Array.from(modules.keys()).forEach(key => {
@@ -163,24 +160,27 @@ export class ModLoader {
         if (G_IS_STANDALONE) {
             mods = await ipcRenderer.invoke("get-mods");
         }
-        if ((G_IS_DEV && globalConfig.debug.externalModUrl) || !window.location.search.includes("dontLoadMods")) {
-            // const modURLs = Array.isArray(globalConfig.debug.externalModUrl)
-            //     ? globalConfig.debug.externalModUrl
-            //     : [globalConfig.debug.externalModUrl];
+        if (G_IS_DEV && globalConfig.debug.externalModUr) {
+            const modURLs = Array.isArray(globalConfig.debug.externalModUrl)
+                ? globalConfig.debug.externalModUrl
+                : [globalConfig.debug.externalModUrl];
 
 
 
-            // for (let i = 0; i < modURLs.length; i++) {
-            //     const response = await fetch(modURLs[i], {
-            //         method: "GET",
-            //     });
-            //     if (response.status !== 200) {
-            //         throw new Error(
-            //             "Failed to load " + modURLs[i] + ": " + response.status + " " + response.statusText
-            //         );
-            //     }
-            //     mods.push(await response.text());
-            // }
+            for (let i = 0; i < modURLs.length; i++) {
+                const response = await fetch(modURLs[i], {
+                    method: "GET",
+                });
+                if (response.status !== 200) {
+                    throw new Error(
+                        "Failed to load " + modURLs[i] + ": " + response.status + " " + response.statusText
+                    );
+                }
+                mods.push(await response.text());
+            }
+        }
+
+        if (!window.location.search.includes("dontLoadMods")) {
             // Built in loader
             const response = await fetch("/res/dimavas-mod-loader@1.4.0.js", {
                 method: "GET",
@@ -192,6 +192,8 @@ export class ModLoader {
             }
             mods.push(await response.text());
         }
+
+
 
         window.$shapez_registerMod = (modClass, meta) => {
             if (this.initialized) {
